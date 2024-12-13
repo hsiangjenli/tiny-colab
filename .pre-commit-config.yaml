@@ -46,6 +46,6 @@ repos:
     hooks:
       - id: yamlfmt
   - repo: https://github.com/kynan/nbstripout
-    rev: 0.8.1  # Specify the version of nbstripout
+    rev: 0.8.1 # Specify the version of nbstripout
     hooks:
       - id: nbstripout
