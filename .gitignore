@@ -1,3 +1,5 @@
+*.env
+
 # Created by https://www.toptal.com/developers/gitignore/api/pythonvanilla,jupyternotebooks
 # Edit at https://www.toptal.com/developers/gitignore?templates=pythonvanilla,jupyternotebooks
 
