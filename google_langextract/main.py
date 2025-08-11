@@ -19,29 +19,37 @@ import argparse
 import os
 
 import langextract as lx
+import textwrap
 
 
 def run_extraction(model_id="llama3.2:3b", temperature=0.3):
     """Run a simple extraction example using Ollama."""
-    input_text = "Isaac Asimov was a prolific science fiction writer."
+    input_text = "Lady Juliet gazed longingly at the stars, her heart aching for Romeo"
 
-    prompt = "Extract the author's full name and their primary literary genre."
+    prompt = textwrap.dedent("""\
+    Extract characters, emotions, and relationships in order of appearance.
+    Use exact text for extractions. Do not paraphrase or overlap entities.
+    Provide meaningful attributes for each entity to add context.""")
 
     examples = [
         lx.data.ExampleData(
-            text=(
-                "J.R.R. Tolkien was an English writer, best known for" " high-fantasy."
-            ),
+            text="ROMEO. But soft! What light through yonder window breaks? It is the east, and Juliet is the sun.",
             extractions=[
                 lx.data.Extraction(
-                    extraction_class="author_details",
-                    # extraction_text includes full context with ellipsis for clarity
-                    extraction_text="J.R.R. Tolkien was an English writer...",
-                    attributes={
-                        "name": "J.R.R. Tolkien",
-                        "genre": "high-fantasy",
-                    },
-                )
+                    extraction_class="character",
+                    extraction_text="ROMEO",
+                    attributes={"emotional_state": "wonder"},
+                ),
+                lx.data.Extraction(
+                    extraction_class="emotion",
+                    extraction_text="But soft!",
+                    attributes={"feeling": "gentle awe"},
+                ),
+                lx.data.Extraction(
+                    extraction_class="relationship",
+                    extraction_text="Juliet is the sun",
+                    attributes={"type": "metaphor"},
+                ),
             ],
         )
     ]
@@ -82,6 +90,12 @@ def main():
 
     try:
         result = run_extraction(model_id=args.model_id, temperature=args.temperature)
+        lx.io.save_annotated_documents(
+            [result], output_name="output.jsonl", output_dir="."
+        )
+        html_content = lx.visualize("output.jsonl")
+        with open("output.html", "w") as f:
+            f.write(html_content)
 
         for extraction in result.extractions:
             print(f"Class: {extraction.extraction_class}")
