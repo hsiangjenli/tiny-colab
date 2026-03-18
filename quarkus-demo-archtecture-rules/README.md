@@ -10,6 +10,12 @@ If you want to learn more about Quarkus, please visit its website: <https://quar
 mise use -g java@openjdk-25
 ```
 
+## Running test
+
+```shell
+mvn test
+```
+
 ## Running the application in dev mode
 
 You can run your application in dev mode that enables live coding using:
