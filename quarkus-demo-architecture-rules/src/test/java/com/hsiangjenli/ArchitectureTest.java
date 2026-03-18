@@ -1,10 +1,8 @@
 package com.hsiangjenli;
 
 import com.enofex.taikai.Taikai.Builder;
-import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
 
-@QuarkusTest
 public class ArchitectureTest {
 
   @Test
